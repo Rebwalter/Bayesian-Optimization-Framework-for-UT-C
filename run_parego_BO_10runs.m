@@ -8,7 +8,7 @@
 % iteration count, and Pareto front size across independent runs.
 %
 % Requires: +data/+results/Initial_LHS_Dataset.mat (from
-%           generate_initial_LHS_dataset.m), runParEGO_BO.m and its
+%           generate_initial_LHS_dataset.m), helper.runParEGO_BO.m and its
 %           dependencies (paretoFront.m, hypervolume3D.m,
 %           area2D_dominated.m, expectedImprovementPoint.m,
 %           vec2struct_full.m, getFixedRefPoint.m), UTC.m, Parallel
@@ -38,7 +38,7 @@ results = cell(n_runs,1);
 
 parfor r = 1:n_runs
     try
-        results{r} = runParEGO_BO(r, DOE, Params, MeteoData, Name_Site, ...
+        results{r} = helper.runParEGO_BO(r, DOE, Params, MeteoData, Name_Site, ...
                                    y_night, y_peak, y_UTCI_peak, Results2m, UTCI);
     catch ME
         warning('Run %d failed: %s', r, ME.message);

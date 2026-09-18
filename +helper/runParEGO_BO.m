@@ -154,7 +154,7 @@ for iter = 1:n_iter
     end
 
     %% ---- Maximize EI via multi-start fmincon ----
-    EIfun = @(x) -expectedImprovementPoint(x, GP, f_best, X.Properties.VariableNames);
+    EIfun = @(x) -helper.expectedImprovementPoint(x, GP, f_best, X.Properties.VariableNames);
     options = optimoptions('fmincon', 'Display','off', 'Algorithm','interior-point', ...
         'StepTolerance',1e-10, 'OptimalityTolerance',1e-8, ...
         'ConstraintTolerance',1e-10, 'MaxFunctionEvaluations',5000);
@@ -205,10 +205,10 @@ for iter = 1:n_iter
     DOE(end+1) = s_new;
 
     %% ---- Update Pareto front / hypervolume, check stopping criterion ----
-    isPareto     = paretoFront(y_all);
+    isPareto     = helper.paretoFront(y_all);
     pareto_idx   = find(isPareto);
     front_points = y_all(pareto_idx,:);
-    HV = hypervolume3D(front_points, ref_point);
+    HV = helper.hypervolume3D(front_points, ref_point);
     hv_history = [hv_history; HV];
 
     if iter >= min_iter_before_stop && iter >= hv_window
